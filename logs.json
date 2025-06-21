@@ -1,16 +1,9 @@
 [
   {
     "akcja": "warn",
-    "użytkownik": "@Jan",
+    "użytkownik": "@TestUser",
     "admin": "@Mod",
     "powód": "Spam",
-    "data": "21.06.2025 16:20"
-  },
-  {
-    "akcja": "ban",
-    "użytkownik": "@BotZły",
-    "admin": "@Admin",
-    "powód": "Reklama",
-    "data": "21.06.2025 16:40"
+    "data": "2025-06-19 17:00"
   }
 ]
