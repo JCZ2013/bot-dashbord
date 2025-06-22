@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel Bota Discord</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #1e1e2f; color: #fff; padding: 20px; }
+    .log { background-color: #2c2f4a; border-left: 5px solid #00bfff; padding: 10px; margin-bottom: 10px; border-radius: 8px; }
+    .akcja { font-weight: bold; color: #ffd700; }
+    button { background-color: #00bfff; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background-color: #008ecc; }
+    #login { text-align: center; margin-top: 100px; }
+    input { padding: 10px; font-size: 16px; border-radius: 6px; border: none; margin: 5px; }
+  </style>
+</head>
+<body>
+
+<div id="login">
+  <h1>🔐 Zaloguj się</h1>
+  <input id="loginInput" placeholder="Login"><br>
+  <input id="hasloInput" type="password" placeholder="Hasło"><br>
+  <button onclick="zaloguj()">Zaloguj</button>
+  <p id="blad" style="color:red; display:none;">Niepoprawne dane logowania</p>
+</div>
+
+<div id="panel" style="display: none;">
+  <h1>📋 Logi akcji</h1>
+  <button onclick="pobierzLogi()">🔄 Odśwież</button>
+  <div id="logi"></div>
+</div>
+
+<script>
+function zaloguj() {
+  fetch("https://twoj-replit-url.repl.co/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      login: document.getElementById("loginInput").value,
+      haslo: document.getElementById("hasloInput").value
+    })
+  })
+  .then(res => {
+    if (res.ok) {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("panel").style.display = "block";
+      pobierzLogi();
+    } else {
+      document.getElementById("blad").style.display = "block";
+    }
+  });
+}
+
+function pobierzLogi() {
+  fetch("https://twoj-replit-url.repl.co/logs")
+    .then(res => res.json())
+    .then(dane => {
+      const logiDiv = document.getElementById("logi");
+      logiDiv.innerHTML = "";
+      dane.reverse().forEach(entry => {
+        const blok = document.createElement("div");
+        blok.classList.add("log");
+        blok.innerHTML = `
+          <div class="akcja">🛡️ ${entry.akcja.toUpperCase()}</div>
+          👤 <strong>${entry.użytkownik}</strong><br/>
+          👮 Admin: ${entry.admin}<br/>
+          📄 Powód: ${entry.powód}<br/>
+          🕒 ${entry.data}
+        `;
+        logiDiv.appendChild(blok);
+      });
+    });
+}
+</script>
+
+</body>
+</html>
